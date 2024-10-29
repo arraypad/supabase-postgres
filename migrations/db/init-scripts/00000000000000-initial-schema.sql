@@ -2,14 +2,17 @@
 
 -- Set up realtime
 -- defaults to empty publication
-create publication supabase_realtime;
+--create publication supabase_realtime;
 
 -- Supabase super admin
 create user supabase_admin;
-alter user  supabase_admin with superuser createdb createrole replication bypassrls;
+grant supabase_admin to postgres;
+
+--alter user  supabase_admin with superuser createdb createrole replication bypassrls;
+alter user  supabase_admin with createdb createrole bypassrls;
 
 -- Supabase replication user
-create user supabase_replication_admin with login replication;
+--create user supabase_replication_admin with login replication;
 
 -- Supabase read-only user
 create role supabase_read_only_user with login bypassrls;
@@ -19,7 +22,7 @@ grant pg_read_all_data to supabase_read_only_user;
 create schema if not exists extensions;
 create extension if not exists "uuid-ossp"      with schema extensions;
 create extension if not exists pgcrypto         with schema extensions;
-create extension if not exists pgjwt            with schema extensions;
+-- create extension if not exists pgjwt            with schema extensions;
 
 -- Set up auth roles for the developer
 create role anon                nologin noinherit;
