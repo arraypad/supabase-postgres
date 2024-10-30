@@ -39,6 +39,10 @@ if [ -z "${USE_DBMATE:-}" ]; then
         echo "$0: running $sql"
         psql -v ON_ERROR_STOP=1 --no-password --no-psqlrc -U postgres -f "$sql"
     done
+    for sql in "$db"/extra/*.sql; do
+        echo "$0: running $sql"
+        psql -v ON_ERROR_STOP=0 --no-password --no-psqlrc -U postgres -f "$sql"
+    done
 else
     # run init scripts as postgres user
     DBMATE_MIGRATIONS_DIR="$db/init-scripts" DATABASE_URL="postgres://postgres:$connect" dbmate --no-dump-schema migrate
